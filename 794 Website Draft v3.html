@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upper Mississippi River Locks and Dams | URBPLAN 794</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #a9bfd0;
+      color: #222;
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.5;
+    }
+
+    header {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 45px;
+      padding: 8px 30px;
+      border: 4px solid black;
+      text-align: center;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .header-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .header-text { max-width: 670px; }
+
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      max-width: 1160px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .left-column, .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      min-width: 0;
+    }
+
+    .section-box, .map-box, .link-box, .sources-box {
+      border: 4px solid black;
+      padding: 18px 25px;
+      background-color: #fff;
+    }
+
+    .section-box { min-height: 160px; }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .heading-link { color: inherit; text-decoration: underline; }
+    .heading-link:hover { color: #0645ad; }
+
+    p { margin-top: 0; }
+
+    ul {
+      margin-bottom: 0;
+      padding-left: 24px;
+    }
+
+    li { margin-bottom: 7px; }
+
+    .photo-slideshow {
+      border: 4px solid black;
+      padding: 12px;
+      background-color: #fff;
+    }
+
+    .slide-image-frame {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f6f8;
+      border: 1px solid #bbb;
+      overflow: hidden;
+    }
+
+    .photo-slideshow img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    .photo-slideshow figcaption {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: left;
+      min-height: 190px;
+    }
+
+    .photo-slideshow figcaption strong {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .slide-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .slide-controls button {
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      border: 2px solid black;
+      background-color: #e5edf3;
+      padding: 4px 11px;
+    }
+
+    .slide-controls button:hover {
+      background-color: #c3d6e5;
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 220px;
+    }
+
+    .slide-dots button {
+      width: 12px;
+      height: 12px;
+      border: 1px solid black;
+      border-radius: 50%;
+      padding: 0;
+      background-color: #fff;
+    }
+
+    .slide-dots button.active {
+      background-color: #355c78;
+    }
+
+    .map-box {
+      padding: 10px;
+    }
+
+    .map-box img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .map-box figcaption {
+      padding-top: 5px;
+    }
+
+    .link-box a, .sources-box a {
+      color: #0645ad;
+    }
+
+    .link-box ul, .sources-box ul {
+      margin-top: 5px;
+    }
+
+    .sources-box {
+      text-align: left;
+    }
+
+    #imageOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.88);
+      align-items: center;
+      justify-content: center;
+      padding: 35px;
+      cursor: pointer;
+    }
+
+    #imageOverlay img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+
+    #imageOverlay button {
+      position: absolute;
+      top: 8px;
+      right: 20px;
+      color: white;
+      background: transparent;
+      border: none;
+      font-size: 36px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 750px) {
+      body { padding: 12px; }
+      header {
+        margin-bottom: 25px;
+        padding: 8px 12px;
+        gap: 10px;
+      }
+      .header-logo {
+        width: 48px;
+        height: 48px;
+      }
+      header h1 { font-size: 15px; }
+      header p { font-size: 11px; }
+      .page-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      .left-column, .right-column {
+        gap: 18px;
+      }
+      .section-box, .link-box, .sources-box {
+        padding: 15px;
+      }
+      .slide-image-frame {
+        height: 240px;
+      }
+      .photo-slideshow figcaption {
+        min-height: 230px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="header-logo" src="USACE_Logo.jpg" alt="U.S. Army Corps of Engineers logo">
+    <div class="header-text">
+      <h1>Locks and Dams of the Upper Mississippi River – URBPLAN 794 Final Project</h1>
+      <p>Peter Niemczyk, University of Wisconsin–Milwaukee, Fall 2026</p>
+    </div>
+    <img class="header-logo" src="UWMLogo.png" alt="University of Wisconsin–Milwaukee logo">
+  </header>
+
+  <main class="page-layout">
+    <div class="left-column">
+      <section class="section-box">
+        <h2><a class="heading-link" href="https://experience.arcgis.com/experience/26ee4a707f134f349289eb24c8cef01a" target="_blank" rel="noopener noreferrer">Project Description and Goals</a></h2>
+        <p>This project helps people explore the complex and important system of locks and dams on the Upper Mississippi River, operated by the U.S. Army Corps of Engineers. Using GIS maps, historical traffic and commodity data, and publicly available live usage data, the project:</p>
+        <ul>
+          <li>Maps the locations of locks and dams along the Mississippi River.</li>
+          <li>Allows users to explore changes in recent vessel traffic and commodity volumes over time (2016–2025).</li>
+          <li>Presents historical and live lock-level data through an interactive ArcGIS Experience Builder application.</li>
+          <li><a href="https://experience.arcgis.com/experience/26ee4a707f134f349289eb24c8cef01a" target="_blank" rel="noopener noreferrer">Click here to view the interactive ArcGIS Experience Builder.</a></li>
+        </ul>
+      </section>
+
+      <section class="section-box">
+        <h2>Overview of Locks and Dams</h2>
+        <p>The U.S. Army Corps of Engineers oversaw the construction of locks and dams on the Upper Mississippi beginning in the 1930s, following the approval of the Nine-Foot Channel Project. Locks and dams help maintain navigable conditions, including sufficient channel depth, along portions of the Upper Mississippi River. They regulate water levels and facilitate vessel traffic, allowing boats to move through the river’s changing elevations.</p>
+        <ul>
+          <li>Lock chambers raise or lower vessels as they move between river pools at different elevations.</li>
+          <li>Dams help maintain navigable pool elevations, particularly during periods of low water.</li>
+          <li>This system allows large quantities of economically important commodities to move by barge and towboat.</li>
+        </ul>
+      </section>
+
+      <section class="section-box">
+        <h2>The Mississippi River</h2>
+        <p>The Mississippi River is the second-longest river in the United States, flowing roughly 2,340 miles south from its headwaters in northern Minnesota to the Gulf of Mexico. It ranges from narrow headwaters to more than 11 miles wide at Lake Winnibigoshish in Minnesota and reaches a depth of approximately 200 feet near New Orleans, Louisiana.</p>
+        <p style="margin-bottom: 0;">The Mississippi River is also a major transportation and economic corridor, supporting the movement of agricultural and industrial commodities, commercial and recreational boating, and water supplies for more than 20 million people.</p>
+      </section>
+
+      <section class="photo-slideshow" aria-label="Photos of the Upper Mississippi River">
+        <figure style="margin: 0;">
+          <div class="slide-image-frame">
+            <img id="slideImage" src="Lock5.jpg" alt="Photo slideshow image"
+                 onclick="showImage(this.src, this.alt)" title="Click to enlarge">
+          </div>
+          <figcaption id="slideCaption" aria-live="polite"></figcaption>
+        </figure>
+        <div class="slide-controls">
+          <button type="button" onclick="changeSlide(-1)" aria-label="Previous photo">&#8592; Previous</button>
+          <div class="slide-dots" id="slideDots" aria-label="Choose a photo"></div>
+          <button type="button" onclick="changeSlide(1)" aria-label="Next photo">Next &#8594;</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="right-column">
+      <figure class="map-box" style="margin: 0;">
+        <img src="LayoutWebsite.jpg" alt="Map of locks and dams on the Upper Mississippi River">
+        <figcaption>Upper Mississippi River lock and dam locations</figcaption>
+      </figure>
+
+      <section class="link-box">
+        <h2>Exploring the Data and the Mississippi River</h2>
+        <ul>
+          <li><a href="https://ndc.ops.usace.army.mil/ords/r/lpms/corps-locks/home" target="_blank" rel="noopener noreferrer">USACE Lock Data</a></li>
+          <li><a href="https://youtu.be/WkvhBfAstMU?si=TcQuqk1yGb9tO3wg" target="_blank" rel="noopener noreferrer">The Mississippi - River of Life (USACE Rock Island District)</a></li>
+          <li><a href="https://www.youtube.com/watch?v=TXm0tpeqTjE" target="_blank" rel="noopener noreferrer">Damming the Mississippi (Hamline University Center for Global Environment Education)</a></li>
+        </ul>
+      </section>
+
+      <section class="sources-box">
+        <h2>Data Sources and References</h2>
+        <ul>
+          <li><a href="https://ndc.ops.usace.army.mil/ords/r/lpms/corps-locks/home" target="_blank" rel="noopener noreferrer">USACE Lock Data</a></li>
+          <li><a href="https://www.weather.gov/gis/Rivers" target="_blank" rel="noopener noreferrer">River Shapefiles</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/List_of_locks_and_dams_of_the_Upper_Mississippi_River" target="_blank" rel="noopener noreferrer">List of Locks and Dams of the Upper Mississippi River</a></li>
+          <li><a href="https://web.archive.org/web/20100527233810/http://www.mvp.usace.army.mil/navigation/default.asp?pageid=145" target="_blank" rel="noopener noreferrer">USACE Overview of Upper Mississippi River</a></li>
+          <li><a href="https://hub.arcgis.com/datasets/TrainingServices::us-state-boundaries/about" target="_blank" rel="noopener noreferrer">State Boundaries Shapefile</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/List_of_crossings_of_the_Upper_Mississippi_River" target="_blank" rel="noopener noreferrer">List of Bridges/Crossings of Upper Mississippi River</a></li>
+          <li><a href="https://www.nps.gov/miss/riverfacts.htm" target="_blank" rel="noopener noreferrer">Facts about Mississippi River</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Mississippi_River" target="_blank" rel="noopener noreferrer">Mississippi River - Wikipedia</a></li>
+          <li><a href="https://www.youtube.com/watch?v=GXsEbZaj0bU" target="_blank" rel="noopener noreferrer">Lock and Dam #19 Livestream</a></li>
+          <li><a href="https://www.youtube.com/watch?v=klAVztOpbAM" target="_blank" rel="noopener noreferrer">Lock and Dam #15 Livestream</a></li>
+          <li><a href="https://ndc.ops.usace.army.mil/ords/r/lpms/corps-locks/lock-status-report" target="_blank" rel="noopener noreferrer">USACE Lock Status Report (Live)</a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <div id="imageOverlay" onclick="closeImage()" role="dialog" aria-label="Enlarged photo" aria-modal="true">
+    <button type="button" onclick="closeImage()" aria-label="Close image">&times;</button>
+    <img id="largeImage" src="" alt="">
+  </div>
+
+  <script>
+    var slides = [
+      {
+        file: "Lock5.jpg",
+        alt: "Lock and Dam 5",
+        caption: "<strong>What's a lock and dam?</strong> - A lock and dam is an engineering system used on rivers and canals to artificially control water levels and allow boats and barges to safely move between sections of water that sit at different heights. There are 27 locks and dams on the Upper Mississippi River operated by the U.S. Army Corps of Engineers (USACE). This system of locks and dams creates a &ldquo;stairway of water&rdquo; by holding back river water to form a series of slack-water pools. The locks act like water elevators or 'steps' that raise and lower towboats and barges as they navigate the roughly 420-foot elevation change between Minneapolis, Minnesota, and St. Louis, Missouri."
+      },
+      {
+        file: "Lock3_construction.jpg",
+        alt: "Construction of Lock and Dam 3",
+        caption: "<strong>History of Locks and Dams</strong> - In 1930, Congress authorized the Nine-Foot Channel Project to maintain a minimum water depth of 9 feet and a width of at least 400 feet from Minneapolis to St. Louis. The vast majority of the 27 locks and dams on the Upper Mississippi were constructed between 1930 and 1940, with most finished by the late 1930s."
+      },
+      {
+        file: "LakePepin.jpg",
+        alt: "Lake Pepin on the Mississippi River",
+        caption: "<strong>Lake Pepin (MN/WI)</strong> - A natural lake on the Mississippi River, roughly 2 miles wide and known as the birthplace of water skiing. It is located between Locks and Dams #3 and #4."
+      },
+      {
+        file: "Lock25.jpg",
+        alt: "Lock and Dam 25",
+        caption: "<strong>Lock and Dam #25</strong> - Opened in 1939 and located near Winfield, Missouri. Construction began in May 2024 to add a new 1,200-foot-long pile-founded lock chamber in the auxiliary miter gate bay, alongside the existing 1930s-era 600-foot lock, which will transition to handling primarily recreational traffic."
+      },
+      {
+        file: "Lock8.jpg",
+        alt: "Lock and Dam 8",
+        caption: "<strong>Lock and Dam #8</strong> - Constructed between 1933 and 1937 and located near Genoa, Wisconsin. This lock and dam underwent major rehabilitation from 1989 to 2003. Between 2016 and 2025, more than 56 million short tons of agricultural products passed through this lock."
+      },
+      {
+        file: "Lock2.jpg",
+        alt: "Lock and Dam 2",
+        caption: "<strong>Lock and Dam #2</strong> - Constructed between 1927 and 1930 and located in Hastings, Minnesota. After construction, the original lock walls settled and began to lean out of alignment, prompting the construction of a replacement lock in 1948. In 2009, Lock and Dam No. 2 became home to the nation's first commercial, federally licensed hydrokinetic power facility, a partnership between the City of Hastings and Hydro Green Energy, LLC of Westmont, Illinois."
+      },
+      {
+        file: "Lock26_2_Construction.png",
+        alt: "Old Lock and Dam 26",
+        caption: "<strong>Old Lock and Dam #26</strong> - Located near Alton, Illinois, roughly 17 miles north of downtown St. Louis. Originally constructed between 1933 and 1939, it was demolished in 1990 because of structural problems and its inability to accommodate increasing river traffic. Its replacement, the Melvin Price Locks and Dam, opened in 1989."
+      },
+      {
+        file: "Barge_Lock3.jpg",
+        alt: "Barge near Lock and Dam 3",
+        caption: "<strong>What's a barge?</strong> - Barges are flat-bottomed, non-self-propelled vessels designed to transport heavy or bulk freight up and down rivers. They are pushed or pulled by specialized tugboats. Standard U.S. inland barges are roughly 195 feet long and 35 feet wide and can carry more than 1,500 short tons. Some towboats can push 30 to 40 barges!"
+      },
+      {
+        file: "LoadingBarge.jpg",
+        alt: "Loading cargo onto a barge",
+        caption: "<strong>Importance of Barges</strong> - The broader Upper Mississippi Riverway moves nearly 589 million tons of goods, roughly 60% of which are grain and other agricultural products. Specific locations, such as Lock and Dam #10 in Guttenberg, Iowa, handle nearly 11 million tons of commodities annually. Barges are also extremely cost-effective and fuel efficient. One gallon of fuel can move one ton of cargo roughly 675 miles by barge, compared with about 470 miles by rail or 145–151 miles by truck. Barges produce significantly fewer greenhouse gases and pollutants per ton-mile than trucks."
+      }
+    ];
+
+    var currentSlide = 0;
+
+    function buildDots() {
+      var dotsContainer = document.getElementById("slideDots");
+      dotsContainer.innerHTML = "";
+
+      slides.forEach(function(slide, index) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.setAttribute("aria-label", "Show photo " + (index + 1));
+        button.onclick = function() { goToSlide(index); };
+        dotsContainer.appendChild(button);
+      });
+    }
+
+    function goToSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      var slide = slides[currentSlide];
+      document.getElementById("slideImage").src = slide.file;
+      document.getElementById("slideImage").alt = slide.alt;
+      document.getElementById("slideCaption").innerHTML = slide.caption;
+
+      var dots = document.querySelectorAll("#slideDots button");
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle("active", i === currentSlide);
+        if (i === currentSlide) {
+          dot.setAttribute("aria-current", "true");
+        } else {
+          dot.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    function changeSlide(direction) {
+      goToSlide(currentSlide + direction);
+    }
+
+    function showImage(source, description) {
+      document.getElementById("largeImage").src = source;
+      document.getElementById("largeImage").alt = description;
+      document.getElementById("imageOverlay").style.display = "flex";
+    }
+
+    function closeImage() {
+      document.getElementById("imageOverlay").style.display = "none";
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeImage();
+      }
+      if (event.key === "ArrowLeft") {
+        changeSlide(-1);
+      }
+      if (event.key === "ArrowRight") {
+        changeSlide(1);
+      }
+    });
+
+
+
+    buildDots();
+    goToSlide(0);
+  </script>
+</body>
+</html>
